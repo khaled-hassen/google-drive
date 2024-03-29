@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body {
+        @apply text-black font-karla;
+    }
+}
+
+@layer components {
+    .content-container {
+        @apply w-full px-12;
+    }
+
+    .btn {
+        @apply px-8 py-3 rounded-full font-medium flex items-center gap-4;
+    }
+
+    .btn-primary {
+        @apply bg-white text-main;
+    }
+}
