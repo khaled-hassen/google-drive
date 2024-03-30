@@ -1,50 +1,26 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login.tsx";
-import { GoogleOAuthProvider } from "@react-oauth/google";
 import Home from "./pages/Home.tsx";
 import PrivateRoutes from "./components/routes/PrivateRoutes.tsx";
 import PublicRoutes from "./components/routes/PublicRoutes.tsx";
 import Error404 from "./pages/Error404.tsx";
-import {
-  AccessToken,
-  getAccessToken,
-  isLoggedIn,
-  removeAccessToken,
-  saveAccessToken,
-} from "./lib/auth.ts";
-import { useCallback, useEffect, useRef } from "react";
+import { useAuth } from "./hooks/useAuth.ts";
+import GoogleApiProvider from "./components/providers/GoogleApiProvider.tsx";
+import { discoveryDocs, scopes } from "./lib/config.ts";
 
 const CLIENT_ID = import.meta.env.VITE_API_GOOGLE_CLIENT_ID as string;
+const API_KEY = import.meta.env.VITE_API_GOOGLE_API_KEY as string;
 
 function App() {
-  const timer = useRef<number>();
-
-  const startTimer = useCallback((expiresAt: Date) => {
-    if (timer.current) clearTimeout(timer.current);
-    timer.current = setTimeout(() => {
-      removeAccessToken();
-      location.replace("/");
-    }, expiresAt.getTime() - Date.now());
-  }, []);
-
-  const handleLogin = useCallback((accessToken: AccessToken) => {
-    saveAccessToken(accessToken);
-    startTimer(accessToken.expiresAt);
-  }, []);
-
-  useEffect(() => {
-    if (isLoggedIn()) {
-      const { expiresAt } = getAccessToken()!;
-      startTimer(expiresAt);
-    } else removeAccessToken();
-
-    return () => {
-      if (timer.current) clearTimeout(timer.current);
-    };
-  }, []);
+  const { handleLogin } = useAuth();
 
   return (
-    <GoogleOAuthProvider clientId={CLIENT_ID}>
+    <GoogleApiProvider
+      apiKey={API_KEY}
+      clientId={CLIENT_ID}
+      scopes={scopes}
+      discoveryDocs={discoveryDocs}
+    >
       <main className="flex min-h-screen w-full">
         <Router>
           <Routes>
@@ -58,7 +34,7 @@ function App() {
           </Routes>
         </Router>
       </main>
-    </GoogleOAuthProvider>
+    </GoogleApiProvider>
   );
 }
 

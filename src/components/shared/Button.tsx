@@ -6,7 +6,7 @@ type Props = {
   Icon: React.FC<IconProps>;
   iconParams?: IconProps;
   text: string;
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "danger";
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button: React.FC<Props> = ({
@@ -29,6 +29,7 @@ const Button: React.FC<Props> = ({
         {
           "btn-primary": variant === "primary",
           "btn-secondary": variant === "secondary",
+          "btn-danger": variant === "danger",
         },
         className,
       )}

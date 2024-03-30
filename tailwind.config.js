@@ -8,6 +8,7 @@ export default {
         white: "#FEFEFE",
         dark: "#0F1215",
         black: "#282828",
+        danger: "#C50718",
       },
       fontFamily: {
         karla: ["Karla", "sans-serif"],

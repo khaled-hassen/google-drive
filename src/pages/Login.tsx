@@ -5,8 +5,8 @@ import Button from "../components/shared/Button.tsx";
 import GoogleIcon from "../components/icons/GoogleIcon.tsx";
 import HeroImage from "../assets/hero.png";
 import BgPattern from "../assets/bg-pattern.svg";
-import { useGoogleLogin } from "@react-oauth/google";
 import { AccessToken } from "../lib/auth.ts";
+import { useGoogleLogin } from "../hooks/useGoogleLogin.ts";
 
 type Props = {
   onLogin(accessToken: AccessToken): void;
@@ -16,11 +16,9 @@ const Login: React.FC<Props> = ({ onLogin }) => {
   const navigate = useNavigate();
 
   const login = useGoogleLogin({
-    onSuccess(user) {
-      const token = user.access_token;
-      const tokenType = user.token_type;
-      const expiresAt = new Date(Date.now() + user.expires_in * 1000);
-      onLogin({ token: `${tokenType} ${token}`, expiresAt });
+    onSuccess(data) {
+      const expiresAt = new Date(Date.now() + data.expires_in * 1000);
+      onLogin({ token: `${data.access_token}`, expiresAt });
       navigate("/home");
     },
   });
