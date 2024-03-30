@@ -1,13 +1,7 @@
 import { useContext } from "react";
-import GoogleApiContext, {
-  OnSuccessCallback,
-} from "../context/GoogleApiContext.ts";
+import GoogleApiContext from "../context/GoogleApiContext.ts";
 
-type UseGoogleLoginParams = {
-  onSuccess: OnSuccessCallback;
-};
-
-export function useGoogleLogin({ onSuccess }: UseGoogleLoginParams) {
+export function useGoogleLogin(onSuccess: () => void) {
   const { login } = useContext(GoogleApiContext);
   return () => login(onSuccess);
 }

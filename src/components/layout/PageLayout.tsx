@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../icons/Logo.tsx";
 import Button from "../shared/Button.tsx";
@@ -6,6 +6,7 @@ import LogoutIcon from "../icons/LogoutIcon.tsx";
 import { removeAccessToken } from "../../lib/auth.ts";
 import DarkModeIcon from "../icons/DarkModeIcon.tsx";
 import { useGoogleLogout } from "../../hooks/useGoogleLogout.ts";
+import { useGooglePeopleApi } from "../../hooks/useGooglePeopleApi.ts";
 
 type Props = {
   children: React.ReactNode;
@@ -13,11 +14,21 @@ type Props = {
 
 const PageLayout: React.FC<Props> = ({ children }) => {
   const navigate = useNavigate();
+  const { ready, getProfilePicture } = useGooglePeopleApi();
+
+  const [profilePicture, setProfilePicture] = useState<string>();
 
   const logout = useGoogleLogout(() => {
     removeAccessToken();
     navigate("/");
   });
+
+  useEffect(() => {
+    if (!ready) return;
+    getProfilePicture().then((url) => {
+      setProfilePicture(url);
+    });
+  }, [ready]);
 
   return (
     <div className="w-full">
@@ -40,6 +51,7 @@ const PageLayout: React.FC<Props> = ({ children }) => {
             variant="danger"
             onClick={logout}
           />
+          <img src={profilePicture} alt="" />
         </div>
       </header>
 
