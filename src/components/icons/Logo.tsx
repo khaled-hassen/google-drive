@@ -1,10 +1,7 @@
 import React from "react";
+import { IconProps } from "./IconProps.ts";
 
-type Props = {
-  color?: "blue" | "white";
-};
-
-const Logo: React.FC<Props> = ({ color = "blue" }) => {
+const Logo: React.FC<IconProps> = ({ color = "blue" }) => {
   return (
     <svg
       width="57"

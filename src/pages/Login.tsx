@@ -5,8 +5,19 @@ import Button from "../components/shared/Button.tsx";
 import GoogleIcon from "../components/icons/GoogleIcon.tsx";
 import HeroImage from "../assets/hero.png";
 import BgPattern from "../assets/bg-pattern.svg";
+import { useGoogleLogin } from "@react-oauth/google";
+import { saveAccessToken } from "../lib/auth.ts";
 
 const Login: React.FC = ({}) => {
+  const login = useGoogleLogin({
+    onSuccess(user) {
+      const token = user.access_token;
+      const tokenType = user.token_type;
+      const expiresAt = new Date(Date.now() + user.expires_in * 1000);
+      saveAccessToken({ token: `${tokenType} ${token}`, expiresAt });
+    },
+  });
+
   return (
     <div
       className=" flex w-full flex-col bg-main bg-cover bg-center bg-no-repeat"
@@ -24,6 +35,7 @@ const Login: React.FC = ({}) => {
             text="Login with google"
             Icon={GoogleIcon}
             iconParams={{ size: 20 }}
+            onClick={() => login()}
           />
         </div>
       </header>
@@ -41,6 +53,7 @@ const Login: React.FC = ({}) => {
             text="Login with google"
             Icon={GoogleIcon}
             className="text-2xl transition-[padding] sm:px-16"
+            onClick={() => login()}
           />
         </div>
         <img

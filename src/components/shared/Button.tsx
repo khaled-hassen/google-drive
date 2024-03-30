@@ -6,7 +6,7 @@ type Props = {
   Icon: React.FC<IconProps>;
   iconParams?: IconProps;
   text: string;
-  variant?: "primary" | "secondary" | "tertiary";
+  variant?: "primary" | "secondary";
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button: React.FC<Props> = ({
@@ -17,16 +17,24 @@ const Button: React.FC<Props> = ({
   className,
   ...props
 }) => {
+  function getButtonColor() {
+    if (variant === "primary") return "blue";
+    if (variant === "secondary") return "white";
+  }
+
   return (
     <button
-      className={cn("btn", className, {
-        "btn-primary": variant === "primary",
-        "btn-secondary": variant === "secondary",
-        "btn-tertiary": variant === "tertiary",
-      })}
+      className={cn(
+        "btn",
+        {
+          "btn-primary": variant === "primary",
+          "btn-secondary": variant === "secondary",
+        },
+        className,
+      )}
       {...props}
     >
-      <Icon {...iconParams} />
+      <Icon color={getButtonColor()} {...iconParams} />
       <span className="">{text}</span>
     </button>
   );
