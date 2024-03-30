@@ -1,20 +1,27 @@
 import React from "react";
 import Logo from "../components/icons/Logo.tsx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/shared/Button.tsx";
 import GoogleIcon from "../components/icons/GoogleIcon.tsx";
 import HeroImage from "../assets/hero.png";
 import BgPattern from "../assets/bg-pattern.svg";
 import { useGoogleLogin } from "@react-oauth/google";
-import { saveAccessToken } from "../lib/auth.ts";
+import { AccessToken } from "../lib/auth.ts";
 
-const Login: React.FC = ({}) => {
+type Props = {
+  onLogin(accessToken: AccessToken): void;
+};
+
+const Login: React.FC<Props> = ({ onLogin }) => {
+  const navigate = useNavigate();
+
   const login = useGoogleLogin({
     onSuccess(user) {
       const token = user.access_token;
       const tokenType = user.token_type;
       const expiresAt = new Date(Date.now() + user.expires_in * 1000);
-      saveAccessToken({ token: `${tokenType} ${token}`, expiresAt });
+      onLogin({ token: `${tokenType} ${token}`, expiresAt });
+      navigate("/home");
     },
   });
 
