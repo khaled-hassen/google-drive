@@ -33,7 +33,9 @@ const Button: React.FC<Props> = ({
       )}
       {...props}
     >
-      <Icon {...iconParams} />
+      <span>
+        <Icon {...iconParams} />
+      </span>
       <span className={titleClassName}>{title}</span>
     </button>
   );

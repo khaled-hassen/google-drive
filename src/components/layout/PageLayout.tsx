@@ -13,12 +13,16 @@ type Props = {
 const PageLayout: React.FC<Props> = ({ children }) => {
   const navigate = useNavigate();
   const logout = useGoogleLogout(() => navigate("/"));
-  const [profilePicture, setProfilePicture] = useState<string>();
+  const [profileInfo, setProfileInfo] = useState({
+    profileImage: "",
+    fullName: "",
+  });
   const [storageInfo, setStorageInfo] = useState({ total: 0, used: 0 });
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  useGooglePeopleApi(async ({ getProfilePicture }) => {
-    const url = await getProfilePicture();
-    setProfilePicture(url);
+  useGooglePeopleApi(async ({ getProfileInfo }) => {
+    const url = await getProfileInfo();
+    setProfileInfo(url);
   });
 
   useGoogleDriveApi(async ({ getStorageInfo }) => {
@@ -27,11 +31,16 @@ const PageLayout: React.FC<Props> = ({ children }) => {
   });
 
   return (
-    <div className="flex w-full flex-col">
-      <Header profilePicture={profilePicture} onLogout={logout} />
-      <div className="flex flex-1">
-        <Sidebar storageInfo={storageInfo} />
-        <div className="">{children}</div>
+    <div className="flex max-h-screen w-full flex-col">
+      <Header
+        profileInfo={profileInfo}
+        onLogout={logout}
+        isSidebarOpen={isSidebarOpen}
+        onToggleSidebar={() => setIsSidebarOpen((val) => !val)}
+      />
+      <div className="relative flex h-[calc(100vh-5.5rem)]">
+        <Sidebar storageInfo={storageInfo} isOpen={isSidebarOpen} />
+        <div className="flex-1 overflow-auto px-6 pb-20">{children}</div>
       </div>
     </div>
   );

@@ -7,25 +7,44 @@ import DarkModeIcon from "../icons/DarkModeIcon.tsx";
 import LogoutIcon from "../icons/LogoutIcon.tsx";
 import DownChevronIcon from "../icons/DownChevronIcon.tsx";
 import { cn } from "../../lib/utils.ts";
+import MenuIcon from "../icons/MenuIcon.tsx";
+import Avatar from "../shared/Avatar.tsx";
 
 type Props = {
-  profilePicture: string | undefined;
+  profileInfo: { profileImage: string; fullName: string };
+  isSidebarOpen: boolean;
+  onToggleSidebar(): void;
   onLogout(): void;
 };
 
-const Header: React.FC<Props> = ({ profilePicture, onLogout }) => {
+const Header: React.FC<Props> = ({
+  profileInfo,
+  isSidebarOpen,
+  onToggleSidebar,
+  onLogout,
+}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <header className="relative">
-      <header className="relative z-[2] flex grid-cols-[auto_1fr_auto] items-center justify-between gap-6 bg-white px-6 py-10 md:grid">
-        <Link to="/home" className="flex items-center gap-4 text-main">
-          <Logo size={30} />
-          <p className="text-2xl font-extrabold tracking-widest max-[410px]:hidden">
-            Google Drive
-          </p>
-        </Link>
-        <label className="bg-darkerWhite mx-auto hidden w-full max-w-xl items-center gap-4 rounded-full px-4 py-2 md:flex">
+      <div className="relative z-[999] flex grid-cols-[auto_1fr_auto] items-center justify-between gap-6 bg-white p-6 md:grid">
+        <div className="flex items-center gap-4">
+          <button
+            className={cn("transition-transform lg:hidden", {
+              "rotate-90": isSidebarOpen,
+            })}
+            onClick={onToggleSidebar}
+          >
+            <MenuIcon />
+          </button>
+          <Link to="/home" className="flex items-center gap-4 text-main">
+            <Logo size={30} />
+            <p className="text-2xl font-extrabold tracking-widest max-[444px]:hidden">
+              Google Drive
+            </p>
+          </Link>
+        </div>
+        <label className="mx-auto hidden w-full max-w-xl items-center gap-4 rounded-full bg-darkerWhite px-4 py-2 md:flex">
           <SearchIcon />
           <input
             type="text"
@@ -34,7 +53,7 @@ const Header: React.FC<Props> = ({ profilePicture, onLogout }) => {
           />
         </label>
         <div className="flex items-center gap-4">
-          <div className="xs:block hidden">
+          <div className="hidden xs:block">
             <Button
               title="Dark mode"
               Icon={DarkModeIcon}
@@ -42,7 +61,7 @@ const Header: React.FC<Props> = ({ profilePicture, onLogout }) => {
               titleClassName="lg:block hidden"
             />
           </div>
-          <div className="xs:block hidden">
+          <div className="hidden xs:block">
             <Button
               title="Logout"
               Icon={LogoutIcon}
@@ -63,17 +82,18 @@ const Header: React.FC<Props> = ({ profilePicture, onLogout }) => {
             }}
             onClick={() => setIsMenuOpen((val) => !val)}
           />
-          <img
-            src={profilePicture}
-            alt=""
-            className="xs:block hidden size-10 rounded-full object-cover"
+          <Avatar
+            id="header-avatar"
+            imgUrl={profileInfo.profileImage}
+            name={profileInfo.fullName}
+            className="hidden xs:block"
           />
         </div>
-      </header>
+      </div>
 
       <div
         className={cn(
-          "absolute left-0 top-full z-[1] flex w-full -translate-y-full flex-col gap-4 bg-white p-6 transition-all md:hidden",
+          "absolute left-0 top-full z-[998] flex w-full -translate-y-full flex-col gap-4 bg-white p-6 transition-all md:hidden",
           { "translate-y-0 shadow-[0_30px_20px_0_#0000001a]": isMenuOpen },
         )}
       >
@@ -81,7 +101,7 @@ const Header: React.FC<Props> = ({ profilePicture, onLogout }) => {
           <Button
             title="Dark mode"
             Icon={DarkModeIcon}
-            className="xs:hidden bg-dark/10 text-dark"
+            className="bg-dark/10 text-dark xs:hidden"
           />
           <Button
             title="Logout"
@@ -90,13 +110,14 @@ const Header: React.FC<Props> = ({ profilePicture, onLogout }) => {
             onClick={onLogout}
             className="xs:hidden"
           />
-          <img
-            src={profilePicture}
-            alt=""
-            className="xs:hidden size-10 rounded-full object-cover"
+          <Avatar
+            id="header-avatar"
+            imgUrl={profileInfo.profileImage}
+            name={profileInfo.fullName}
+            className="size-10 xs:hidden"
           />
         </div>
-        <label className="bg-darkerWhite flex items-center gap-4 rounded-full px-4 py-2">
+        <label className="flex items-center gap-4 rounded-full bg-darkerWhite px-4 py-2">
           <SearchIcon />
           <input
             type="text"
