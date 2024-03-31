@@ -1,7 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import GoogleApiContext from "../../context/GoogleApiContext.ts";
 import { useAuth } from "../../hooks/useAuth.ts";
-import { getAccessToken, isLoggedIn } from "../../lib/auth.ts";
+import {
+  getAccessToken,
+  isLoggedIn,
+  removeAccessToken,
+} from "../../lib/auth.ts";
 
 type Props = {
   clientId: string;
@@ -88,6 +92,7 @@ const GoogleApiProvider: React.FC<Props> = ({
       google.accounts.oauth2.revoke(token.access_token, () => {});
       gapi.client.setToken(null);
     }
+    removeAccessToken();
   }
 
   useEffect(() => {

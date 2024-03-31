@@ -1,7 +1,13 @@
 import { useContext, useEffect, useRef } from "react";
 import GoogleApiContext from "../context/GoogleApiContext.ts";
 
-export function useGooglePeopleApi() {
+type OnReadyParams = {
+  getProfilePicture(): Promise<string | undefined>;
+};
+
+type OnReady = (params: OnReadyParams) => void;
+
+export function useGooglePeopleApi(onReady: OnReady) {
   const { scriptsLoaded } = useContext(GoogleApiContext);
   const people = useRef<gapi.client.people.PeopleResource>();
 
@@ -19,8 +25,9 @@ export function useGooglePeopleApi() {
   }
 
   useEffect(() => {
-    if (scriptsLoaded) people.current = gapi.client.people.people;
+    if (scriptsLoaded) {
+      people.current = gapi.client.people.people;
+      onReady({ getProfilePicture });
+    }
   }, [scriptsLoaded]);
-
-  return { ready: scriptsLoaded, getProfilePicture };
 }

@@ -11,12 +11,8 @@
 }
 
 @layer components {
-    .content-container {
-        @apply w-full px-12;
-    }
-
     .btn {
-        @apply px-8 py-3 rounded-full font-medium flex items-center gap-4;
+        @apply px-4 py-2 rounded-full font-medium flex items-center gap-4;
     }
 
     .btn-primary {
@@ -25,5 +21,9 @@
 
     .btn-danger {
         @apply bg-danger/10 text-danger;
+    }
+
+    .btn-tertiary {
+        @apply bg-darkerWhite;
     }
 }

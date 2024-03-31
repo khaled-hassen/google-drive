@@ -14,13 +14,13 @@ const Login: React.FC = ({}) => {
 
   return (
     <div
-      className=" flex w-full flex-col bg-main bg-cover bg-center bg-no-repeat"
+      className="flex w-full flex-col bg-main bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: `url(${BgPattern})` }}
     >
-      <header className="content-container flex items-center justify-between gap-10 py-12">
-        <Link to="/" className="flex items-center gap-4">
-          <Logo color="white" />
-          <p className="text-3xl font-extrabold tracking-widest text-white">
+      <header className="flex w-full items-center justify-between gap-10 p-12">
+        <Link to="/" className="flex items-center gap-4 text-white">
+          <Logo />
+          <p className="text-3xl font-extrabold tracking-widest">
             Google Drive
           </p>
         </Link>
@@ -30,11 +30,12 @@ const Login: React.FC = ({}) => {
             Icon={GoogleIcon}
             iconParams={{ size: 20 }}
             onClick={() => login()}
+            className="px-8 py-3"
           />
         </div>
       </header>
 
-      <section className="content-container flex flex-col items-center justify-between gap-8 overflow-x-clip py-20 transition-[padding] lg:flex-row lg:pr-0 lg:pt-0">
+      <section className="flex w-full flex-col items-center justify-between gap-8 overflow-x-clip px-12 py-20 transition-[padding] lg:flex-row lg:pr-0 lg:pt-0">
         <div className="flex flex-col items-start gap-8 text-white lg:max-w-2xl">
           <h1 className="text-6xl font-bold tracking-wider">
             Easy and secure access to your content
@@ -46,7 +47,7 @@ const Login: React.FC = ({}) => {
           <Button
             text="Login with google"
             Icon={GoogleIcon}
-            className="text-2xl transition-[padding] sm:px-16"
+            className="px-8 py-4 text-2xl transition-[padding] sm:px-16"
             onClick={() => login()}
           />
         </div>
