@@ -1,13 +1,12 @@
 import React from "react";
-import Avatar from "./Avatar.tsx";
-import { convertBytesToUnit, formatDate } from "../../lib/utils.ts";
-import MoreIcon from "../icons/MoreIcon.tsx";
+import FileRow from "./FileRow.tsx";
 
 type Props = {
   files: gapi.client.drive.File[];
+  onFileDeleted(id: string): void;
 };
 
-const FilesTable: React.FC<Props> = ({ files }) => {
+const FilesTable: React.FC<Props> = ({ files, onFileDeleted }) => {
   return (
     <div className="overflow-auto">
       <div className="min-w-[50rem]">
@@ -18,32 +17,12 @@ const FilesTable: React.FC<Props> = ({ files }) => {
           <p className="text-center">File size</p>
         </div>
         {files.map((file) => (
-          <div
+          <FileRow
             key={file.id}
+            file={file}
             className="grid grid-cols-[1.5fr_0.5fr_1fr_1fr_1.5rem] gap-6 border-b border-b-lightGray py-6"
-          >
-            <p className="truncate font-bold">{file.name}</p>
-            <div className="flex items-center justify-center gap-1">
-              {file.owners?.map((owner, i) => (
-                <Avatar
-                  key={i}
-                  id={`${owner.displayName?.replace(/\s/g, "-")}-${i}-${file.id}`}
-                  imgUrl={owner.photoLink}
-                  name={owner.displayName || ""}
-                  className="size-5"
-                />
-              ))}
-            </div>
-            <p className="text-center">{formatDate(file.modifiedTime)}</p>
-            <p className="text-center">
-              {convertBytesToUnit(parseInt(file.size || "0"))}
-            </p>
-            <div className="flex justify-end">
-              <button>
-                <MoreIcon />
-              </button>
-            </div>
-          </div>
+            onFileDeleted={onFileDeleted}
+          />
         ))}
       </div>
     </div>

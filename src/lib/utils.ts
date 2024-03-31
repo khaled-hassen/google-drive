@@ -22,3 +22,12 @@ export function formatDate(date: string | undefined) {
     hour12: true,
   }).format(new Date(date));
 }
+
+export function downloadFile(filename: string, link: string) {
+  const downloadLink = document.createElement("a");
+  downloadLink.href = link;
+  downloadLink.download = filename;
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  document.body.removeChild(downloadLink);
+}

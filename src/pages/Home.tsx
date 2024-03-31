@@ -40,7 +40,12 @@ const Home: React.FC = ({}) => {
       </div>
       <div className="flex flex-col gap-6">
         <p className="text-3xl font-bold">Recent files</p>
-        <FilesTable files={recentFiles} />
+        <FilesTable
+          files={recentFiles}
+          onFileDeleted={(id) =>
+            setRecentFiles((val) => val.filter((file) => file.id !== id))
+          }
+        />
       </div>
     </div>
   );

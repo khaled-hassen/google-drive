@@ -59,4 +59,19 @@ export function useGoogleDriveApi(onReady?: OnReady) {
       onReady?.({ getStorageInfo, getRecentFolders, getRecentFiles });
     }
   }, [scriptsLoaded]);
+
+  async function getFileToDownload(fileId: string) {
+    if (!files.current) return;
+    const { result } = await files.current.get({
+      fileId,
+      fields: "webContentLink",
+    });
+    return result.webContentLink;
+  }
+
+  async function deleteFile(fileId: string) {
+    if (files.current) await files.current.delete({ fileId });
+  }
+
+  return { getFileToDownload, deleteFile };
 }
