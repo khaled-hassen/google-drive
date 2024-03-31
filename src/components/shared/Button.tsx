@@ -1,6 +1,7 @@
 import React from "react";
 import { IconProps } from "../icons/IconProps.ts";
 import { cn } from "../../lib/utils.ts";
+import LoadingSpinner from "../icons/LoadingSpinner.tsx";
 
 type Props = {
   Icon: React.FC<IconProps>;
@@ -8,6 +9,7 @@ type Props = {
   title: string;
   variant?: "primary" | "secondary" | "tertiary" | "danger";
   titleClassName?: string;
+  loading?: boolean;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button: React.FC<Props> = ({
@@ -17,6 +19,8 @@ const Button: React.FC<Props> = ({
   variant = "primary",
   className,
   titleClassName,
+  loading,
+  disabled,
   ...props
 }) => {
   return (
@@ -31,11 +35,10 @@ const Button: React.FC<Props> = ({
         },
         className,
       )}
+      disabled={loading || disabled}
       {...props}
     >
-      <span>
-        <Icon {...iconParams} />
-      </span>
+      <span>{loading ? <LoadingSpinner /> : <Icon {...iconParams} />}</span>
       <span className={titleClassName}>{title}</span>
     </button>
   );

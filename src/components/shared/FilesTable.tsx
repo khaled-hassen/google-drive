@@ -10,7 +10,7 @@ const FilesTable: React.FC<Props> = ({ files, onFileDeleted }) => {
   return (
     <div className="overflow-auto">
       <div className="min-w-[50rem]">
-        <div className="grid grid-cols-[1.5fr_0.5fr_1fr_1fr_1.5rem] gap-6 font-bold text-lightGray">
+        <div className="grid grid-cols-[1.5fr_0.5fr_1fr_1fr_7rem] gap-6 font-bold text-lightGray">
           <p>Name</p>
           <p className="text-center">Owner</p>
           <p className="text-center">Last modified</p>
@@ -20,7 +20,7 @@ const FilesTable: React.FC<Props> = ({ files, onFileDeleted }) => {
           <FileRow
             key={file.id}
             file={file}
-            className="grid grid-cols-[1.5fr_0.5fr_1fr_1fr_1.5rem] gap-6 border-b border-b-lightGray py-6"
+            className="grid grid-cols-[1.5fr_0.5fr_1fr_1fr_7rem] gap-6 border-b border-b-lightGray py-6"
             onFileDeleted={onFileDeleted}
           />
         ))}

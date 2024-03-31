@@ -1,11 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import Avatar from "./Avatar.tsx";
 import {
   convertBytesToUnit,
   downloadFile,
   formatDate,
 } from "../../lib/utils.ts";
-import MoreIcon from "../icons/MoreIcon.tsx";
 import Button from "./Button.tsx";
 import DownloadIcon from "../icons/DownloadIcon.tsx";
 import DeleteIcon from "../icons/DeleteIcon.tsx";
@@ -48,42 +47,24 @@ function getFileTypeIcon(mimeType: string | undefined) {
 }
 
 const FileRow: React.FC<Props> = ({ file, className, onFileDeleted }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const container = useRef<HTMLDivElement>(null);
-  const menu = useRef<HTMLDivElement>(null);
-
+  const [downloadLoading, setDownloadLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const { getFileToDownload, deleteFile } = useGoogleDriveApi();
 
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        menu.current &&
-        !menu.current.contains(event.target as any) &&
-        container.current &&
-        !container.current.contains(event.target as any)
-      )
-        setIsOpen(false);
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
   async function download() {
-    setIsOpen(false);
     if (!file.id || !file.mimeType) return;
+    setDownloadLoading(true);
     const downloadLink = await getFileToDownload(file.id);
+    setDownloadLoading(false);
     if (!downloadLink) return;
     downloadFile(file.name || "file", downloadLink);
   }
 
   async function remove() {
-    setIsOpen(false);
     if (!file.id) return;
+    setDeleteLoading(true);
     await deleteFile(file.id);
+    setDeleteLoading(false);
     onFileDeleted(file.id);
   }
 
@@ -108,30 +89,25 @@ const FileRow: React.FC<Props> = ({ file, className, onFileDeleted }) => {
       <p className="text-center">
         {convertBytesToUnit(parseInt(file.size || "0"))}
       </p>
-      <div ref={container} className="relative">
-        <button onClick={() => setIsOpen((val) => !val)}>
-          <MoreIcon />
-        </button>
-
-        {isOpen && (
-          <div
-            ref={menu}
-            className="absolute right-4 top-full z-50 flex flex-col gap-6 rounded-2xl bg-white p-6 shadow-[0_1px_20px_0_#00000040]"
-          >
-            <Button
-              title="Download"
-              Icon={DownloadIcon}
-              className="bg-main/10"
-              onClick={download}
-            />
-            <Button
-              title="Delete"
-              Icon={DeleteIcon}
-              variant="danger"
-              onClick={remove}
-            />
-          </div>
-        )}
+      <div className="flex items-center justify-end gap-2">
+        <Button
+          title="Download"
+          Icon={DownloadIcon}
+          className="bg-main/10"
+          titleClassName="hidden"
+          loading={downloadLoading}
+          disabled={deleteLoading || downloadLoading}
+          onClick={download}
+        />
+        <Button
+          title="Delete"
+          Icon={DeleteIcon}
+          variant="danger"
+          titleClassName="hidden"
+          loading={deleteLoading}
+          disabled={deleteLoading || downloadLoading}
+          onClick={remove}
+        />
       </div>
     </div>
   );
