@@ -25,7 +25,7 @@ const Error404: React.FC = ({}) => {
         <p className="text-2xl">The page you are looking for does not exist</p>
         <Link to="/">
           <Button
-            text="Go back to home"
+            title="Go back to home"
             Icon={HomeIcon}
             iconParams={{ size: 30 }}
             className="px-8 py-3 text-2xl"

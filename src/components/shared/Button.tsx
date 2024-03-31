@@ -5,18 +5,18 @@ import { cn } from "../../lib/utils.ts";
 type Props = {
   Icon: React.FC<IconProps>;
   iconParams?: IconProps;
-  text: string;
+  title: string;
   variant?: "primary" | "secondary" | "tertiary" | "danger";
-  textClassName?: string;
+  titleClassName?: string;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button: React.FC<Props> = ({
   Icon,
   iconParams,
-  text,
+  title,
   variant = "primary",
   className,
-  textClassName,
+  titleClassName,
   ...props
 }) => {
   return (
@@ -34,7 +34,7 @@ const Button: React.FC<Props> = ({
       {...props}
     >
       <Icon {...iconParams} />
-      <span className={textClassName}>{text}</span>
+      <span className={titleClassName}>{title}</span>
     </button>
   );
 };

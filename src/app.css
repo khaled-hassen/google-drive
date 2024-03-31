@@ -23,6 +23,10 @@
         @apply bg-danger/10 text-danger;
     }
 
+    .btn-secondary {
+        @apply bg-transparent text-white outline outline-2 outline-white;
+    }
+
     .btn-tertiary {
         @apply bg-darkerWhite;
     }

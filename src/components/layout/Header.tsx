@@ -36,23 +36,23 @@ const Header: React.FC<Props> = ({ profilePicture, onLogout }) => {
         <div className="flex items-center gap-4">
           <div className="xs:block hidden">
             <Button
-              text="Dark mode"
+              title="Dark mode"
               Icon={DarkModeIcon}
               className="bg-dark/10 text-dark"
-              textClassName="lg:block hidden"
+              titleClassName="lg:block hidden"
             />
           </div>
           <div className="xs:block hidden">
             <Button
-              text="Logout"
+              title="Logout"
               Icon={LogoutIcon}
               variant="danger"
-              textClassName="lg:block hidden"
+              titleClassName="lg:block hidden"
               onClick={onLogout}
             />
           </div>
           <Button
-            text="Menu"
+            title="Menu"
             Icon={DownChevronIcon}
             variant="tertiary"
             className="gap-2 md:hidden"
@@ -79,12 +79,12 @@ const Header: React.FC<Props> = ({ profilePicture, onLogout }) => {
       >
         <div className="flex flex-wrap-reverse items-center justify-end gap-4">
           <Button
-            text="Dark mode"
+            title="Dark mode"
             Icon={DarkModeIcon}
             className="xs:hidden bg-dark/10 text-dark"
           />
           <Button
-            text="Logout"
+            title="Logout"
             Icon={LogoutIcon}
             variant="danger"
             onClick={onLogout}

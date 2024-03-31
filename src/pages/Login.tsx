@@ -26,7 +26,7 @@ const Login: React.FC = ({}) => {
         </Link>
         <div className="hidden md:block">
           <Button
-            text="Login with google"
+            title="Login with google"
             Icon={GoogleIcon}
             iconParams={{ size: 20 }}
             onClick={() => login()}
@@ -45,7 +45,7 @@ const Login: React.FC = ({}) => {
             device, tablet, or computer
           </p>
           <Button
-            text="Login with google"
+            title="Login with google"
             Icon={GoogleIcon}
             className="px-8 py-4 text-2xl transition-[padding] sm:px-16"
             onClick={() => login()}
