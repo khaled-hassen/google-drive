@@ -14,6 +14,8 @@ import SlideIcon from "../icons/SlideIcon.tsx";
 import ExcelIcon from "../icons/ExcelIcon.tsx";
 import PdfIcon from "../icons/PdfIcon.tsx";
 import { useGoogleDriveApi } from "../../hooks/useGoogleDriveApi.ts";
+import FilledFolderIcon from "../icons/FilledFolderIcon.tsx";
+import { Link } from "react-router-dom";
 
 type Props = {
   file: gapi.client.drive.File;
@@ -41,9 +43,15 @@ function getFileTypeIcon(mimeType: string | undefined) {
     case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
     case "application/vnd.openxmlformats-officedocument.spreadsheetml.template":
       return <ExcelIcon />;
+    case "application/vnd.google-apps.folder":
+      return <FilledFolderIcon />;
     default:
       return <FilledFileIcon />;
   }
+}
+
+function isFolder(mimeType: string | undefined) {
+  return mimeType === "application/vnd.google-apps.folder";
 }
 
 const FileRow: React.FC<Props> = ({ file, className, onFileDeleted }) => {
@@ -72,7 +80,16 @@ const FileRow: React.FC<Props> = ({ file, className, onFileDeleted }) => {
     <div className={className}>
       <div className="flex items-center gap-4 overflow-hidden">
         {getFileTypeIcon(file.mimeType)}
-        <p className="flex-1 truncate font-bold">{file.name}</p>
+        {isFolder(file.mimeType) ? (
+          <Link
+            to={{ pathname: `/folder/${file.id}` }}
+            className="flex-1 truncate font-bold"
+          >
+            {file.name}
+          </Link>
+        ) : (
+          <p className="flex-1 truncate font-bold">{file.name}</p>
+        )}
       </div>
       <div className="flex items-center justify-center gap-1">
         {file.owners?.map((owner, i) => (
@@ -87,7 +104,7 @@ const FileRow: React.FC<Props> = ({ file, className, onFileDeleted }) => {
       </div>
       <p className="text-center">{formatDate(file.modifiedTime)}</p>
       <p className="text-center">
-        {convertBytesToUnit(parseInt(file.size || "0"))}
+        {file.size ? convertBytesToUnit(parseInt(file.size)) : "-"}
       </p>
       <div className="flex items-center justify-end gap-2">
         <Button

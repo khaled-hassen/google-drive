@@ -1,11 +1,11 @@
 import React from "react";
 import { IconProps } from "./IconProps.ts";
 
-const DriveIcon: React.FC<IconProps> = ({}) => {
+const DriveIcon: React.FC<IconProps> = ({ size }) => {
   return (
     <svg
-      width="31"
-      height="19"
+      width={size ? size + 2 : 31}
+      height={size || 19}
       viewBox="0 0 31 19"
       fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"

@@ -5,6 +5,7 @@ type OnReadyParams = {
   getStorageInfo(): Promise<{ total: number; used: number }>;
   getRecentFolders(): Promise<gapi.client.drive.File[]>;
   getRecentFiles(): Promise<gapi.client.drive.File[]>;
+  getDriveFiles(): Promise<gapi.client.drive.File[]>;
 };
 
 type OnReady = (params: OnReadyParams) => void;
@@ -52,14 +53,6 @@ export function useGoogleDriveApi(onReady?: OnReady) {
     return result.files || [];
   }
 
-  useEffect(() => {
-    if (scriptsLoaded) {
-      about.current = gapi.client.drive.about;
-      files.current = gapi.client.drive.files;
-      onReady?.({ getStorageInfo, getRecentFolders, getRecentFiles });
-    }
-  }, [scriptsLoaded]);
-
   async function getFileToDownload(fileId: string) {
     if (!files.current) return;
     const { result } = await files.current.get({
@@ -73,5 +66,52 @@ export function useGoogleDriveApi(onReady?: OnReady) {
     if (files.current) await files.current.delete({ fileId });
   }
 
-  return { getFileToDownload, deleteFile };
+  async function getFolder(folderId: string) {
+    if (!files.current) return { name: "", files: [] };
+
+    const folder = await files.current.get({
+      fileId: folderId,
+      fields: "name",
+    });
+
+    const { result } = await files.current.list({
+      q: `'${folderId}' in parents`,
+      orderBy: "modifiedTime desc",
+      fields: "files(id, name, owners, modifiedTime, size, mimeType)",
+    });
+
+    return { name: folder.result.name || "", files: result.files || [] };
+  }
+
+  async function getDriveFiles() {
+    if (!files.current) return [];
+
+    const { result } = await files.current.list({
+      q: "'root' in parents",
+      orderBy: "modifiedTime desc",
+      fields: "files(id, name, owners, modifiedTime, size, mimeType)",
+    });
+
+    return result.files || [];
+  }
+
+  useEffect(() => {
+    if (scriptsLoaded) {
+      about.current = gapi.client.drive.about;
+      files.current = gapi.client.drive.files;
+      onReady?.({
+        getStorageInfo,
+        getRecentFolders,
+        getRecentFiles,
+        getDriveFiles,
+      });
+    }
+  }, [scriptsLoaded]);
+
+  return {
+    ready: scriptsLoaded,
+    getFileToDownload,
+    deleteFile,
+    getFolder,
+  };
 }
