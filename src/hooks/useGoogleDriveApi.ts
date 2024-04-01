@@ -95,12 +95,13 @@ export function useGoogleDriveApi(onReady?: OnReady) {
     return result.files || [];
   }
 
-  async function createFolder(folderName: string) {
+  async function createFolder(folderName: string, parentId?: string) {
     if (!files.current) return;
 
     const fileMetadata = {
       name: folderName,
       mimeType: "application/vnd.google-apps.folder",
+      parents: parentId ? [parentId] : [],
     };
 
     const { result } = await files.current.create({

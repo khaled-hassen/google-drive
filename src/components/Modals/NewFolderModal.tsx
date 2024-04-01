@@ -3,8 +3,8 @@ import Modal from "./Modal.tsx";
 import FolderPlusIcon from "../icons/FolderPlusIcon.tsx";
 import Button from "../shared/Button.tsx";
 import CloseIcon from "../icons/CloseIcon.tsx";
-import { useNavigate } from "react-router-dom";
 import { useGoogleDriveApi } from "../../hooks/useGoogleDriveApi.ts";
+import { useParams } from "react-router-dom";
 
 type Props = {
   isOpen: boolean;
@@ -19,13 +19,14 @@ const NewFolderModal: React.FC<Props> = ({
 }) => {
   const { createFolder } = useGoogleDriveApi();
   const [loading, setLoading] = useState(false);
+  const { id } = useParams();
 
   async function createNewFolder(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setLoading(true);
     const formData = new FormData(event.currentTarget);
     const name = formData.get("name") as string;
-    const folderId = await createFolder(name);
+    const folderId = await createFolder(name, id);
     setLoading(false);
     if (!folderId) return;
     onFolderCreated(folderId);
@@ -36,6 +37,7 @@ const NewFolderModal: React.FC<Props> = ({
       <form className="flex flex-col gap-10" onSubmit={createNewFolder}>
         <label className="w-full max-w-xl rounded-full bg-darkerWhite px-4 py-2">
           <input
+            autoFocus
             type="text"
             name="name"
             className="min-w-0 flex-1 bg-transparent focus:outline-none"
