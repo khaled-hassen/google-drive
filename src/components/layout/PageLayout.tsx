@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useGoogleLogout } from "../../hooks/useGoogleLogout.ts";
 import { useGooglePeopleApi } from "../../hooks/useGooglePeopleApi.ts";
 import Header from "./Header.tsx";
@@ -12,6 +12,7 @@ type Props = {
 
 const PageLayout: React.FC<Props> = ({ children }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const logout = useGoogleLogout(() => navigate("/"));
   const [profileInfo, setProfileInfo] = useState({
     profileImage: "",
@@ -29,6 +30,10 @@ const PageLayout: React.FC<Props> = ({ children }) => {
     const info = await getStorageInfo();
     setStorageInfo(info);
   });
+
+  useEffect(() => {
+    if (isSidebarOpen) setIsSidebarOpen(false);
+  }, [location]);
 
   return (
     <div className="flex max-h-screen w-full flex-col">

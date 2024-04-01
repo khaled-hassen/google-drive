@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "../shared/Button.tsx";
 import FileIcon from "../icons/FileIcon.tsx";
 import FolderIcon from "../icons/FolderIcon.tsx";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import HomeIcon from "../icons/HomeIcon.tsx";
 import { convertBytesToUnit, cn } from "../../lib/utils.ts";
 import DriveIcon from "../icons/DriveIcon.tsx";
 import StorageIcon from "../icons/StorageIcon.tsx";
+import FolderPlusIcon from "../icons/FolderPlusIcon.tsx";
+import NewFolderModal from "../Modals/NewFolderModal.tsx";
 
 type Props = {
   storageInfo: { total: number; used: number };
@@ -19,6 +21,9 @@ function percentUsed(used: number, total: number) {
 }
 
 const Sidebar: React.FC<Props> = ({ storageInfo, isOpen }) => {
+  const [isNewFolderModalOpen, setIsNewFolderModalOpen] = useState(false);
+  const navigate = useNavigate();
+
   return (
     <>
       <div className="mr-0 transition-[margin] lg:mr-64" />
@@ -42,6 +47,14 @@ const Sidebar: React.FC<Props> = ({ storageInfo, isOpen }) => {
               variant="secondary"
               className="overflow-hidden"
               titleClassName="whitespace-nowrap"
+            />
+            <Button
+              title="Create new folder"
+              Icon={FolderPlusIcon}
+              variant="secondary"
+              className="overflow-hidden"
+              titleClassName="whitespace-nowrap"
+              onClick={() => setIsNewFolderModalOpen(true)}
             />
           </div>
           <div className="flex flex-col gap-6">
@@ -93,6 +106,15 @@ const Sidebar: React.FC<Props> = ({ storageInfo, isOpen }) => {
           </div>
         </div>
       </aside>
+
+      <NewFolderModal
+        isOpen={isNewFolderModalOpen}
+        onFolderCreated={(id) => {
+          setIsNewFolderModalOpen(false);
+          navigate(`/folder/${id}`);
+        }}
+        onClose={() => setIsNewFolderModalOpen(false)}
+      />
     </>
   );
 };

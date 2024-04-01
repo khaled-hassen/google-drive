@@ -110,7 +110,7 @@ const FileRow: React.FC<Props> = ({ file, className, onFileDeleted }) => {
         <Button
           title="Download"
           Icon={DownloadIcon}
-          className="bg-main/10"
+          variant="success"
           titleClassName="hidden"
           loading={downloadLoading}
           disabled={deleteLoading || downloadLoading}

@@ -95,6 +95,21 @@ export function useGoogleDriveApi(onReady?: OnReady) {
     return result.files || [];
   }
 
+  async function createFolder(folderName: string) {
+    if (!files.current) return;
+
+    const fileMetadata = {
+      name: folderName,
+      mimeType: "application/vnd.google-apps.folder",
+    };
+
+    const { result } = await files.current.create({
+      resource: fileMetadata,
+      fields: "id",
+    });
+    return result.id;
+  }
+
   useEffect(() => {
     if (scriptsLoaded) {
       about.current = gapi.client.drive.about;
@@ -113,5 +128,6 @@ export function useGoogleDriveApi(onReady?: OnReady) {
     getFileToDownload,
     deleteFile,
     getFolder,
+    createFolder,
   };
 }

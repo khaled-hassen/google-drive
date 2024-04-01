@@ -30,4 +30,8 @@
     .btn-tertiary {
         @apply bg-darkerWhite;
     }
+
+    .btn-success {
+        @apply bg-main/10 text-main;
+    }
 }
