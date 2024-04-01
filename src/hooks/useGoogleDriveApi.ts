@@ -111,6 +111,31 @@ export function useGoogleDriveApi(onReady?: OnReady) {
     return result.id;
   }
 
+  async function uploadFiles(fileList: FileList, parentId?: string) {
+    if (!files.current) return;
+
+    for (let i = 0; i < fileList.length; i++) {
+      const file = fileList.item(i);
+      if (!file) continue;
+
+      const fileMetadata = {
+        name: file.name,
+        parents: parentId ? [parentId] : [],
+      };
+      const media = {
+        mimeType: file.type,
+        body: file,
+      };
+
+      await files.current.create({
+        fields: "id",
+        resource: fileMetadata,
+        // @ts-ignore
+        media,
+      });
+    }
+  }
+
   useEffect(() => {
     if (scriptsLoaded) {
       about.current = gapi.client.drive.about;
@@ -130,5 +155,6 @@ export function useGoogleDriveApi(onReady?: OnReady) {
     deleteFile,
     getFolder,
     createFolder,
+    uploadFiles,
   };
 }

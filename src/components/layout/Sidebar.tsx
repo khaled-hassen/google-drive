@@ -9,6 +9,7 @@ import DriveIcon from "../icons/DriveIcon.tsx";
 import StorageIcon from "../icons/StorageIcon.tsx";
 import FolderPlusIcon from "../icons/FolderPlusIcon.tsx";
 import NewFolderModal from "../Modals/NewFolderModal.tsx";
+import UploadFilesModal from "../Modals/UploadFilesModal.tsx";
 
 type Props = {
   storageInfo: { total: number; used: number };
@@ -22,6 +23,7 @@ function percentUsed(used: number, total: number) {
 
 const Sidebar: React.FC<Props> = ({ storageInfo, isOpen }) => {
   const [isNewFolderModalOpen, setIsNewFolderModalOpen] = useState(false);
+  const [isUploadFilesModalOpen, setIsUploadFilesModalOpen] = useState(false);
   const navigate = useNavigate();
 
   return (
@@ -40,6 +42,7 @@ const Sidebar: React.FC<Props> = ({ storageInfo, isOpen }) => {
               Icon={FileIcon}
               className="overflow-hidden"
               titleClassName="whitespace-nowrap"
+              onClick={() => setIsUploadFilesModalOpen(true)}
             />
             <Button
               title="Upload new folder"
@@ -114,6 +117,11 @@ const Sidebar: React.FC<Props> = ({ storageInfo, isOpen }) => {
           navigate(`/folder/${id}`);
         }}
         onClose={() => setIsNewFolderModalOpen(false)}
+      />
+
+      <UploadFilesModal
+        isOpen={isUploadFilesModalOpen}
+        onClose={() => setIsUploadFilesModalOpen(false)}
       />
     </>
   );

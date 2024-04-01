@@ -6,7 +6,7 @@ type Props = {
   title: string;
   isOpen: boolean;
   children: React.ReactNode;
-  className: string;
+  className?: string;
 };
 
 const Modal: React.FC<Props> = ({ title, isOpen, className, children }) => {
