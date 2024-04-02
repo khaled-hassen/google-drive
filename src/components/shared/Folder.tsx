@@ -11,7 +11,7 @@ const Folder: React.FC<Props> = ({ folder }) => {
   return (
     <Link
       to={`/folder/${folder.id}`}
-      className="group relative text-darkerWhite transition-colors hover:text-main"
+      className="dark:text-lightDark group relative text-darkerWhite transition-colors hover:text-main dark:hover:text-main"
     >
       <svg
         viewBox="0 0 297 210"

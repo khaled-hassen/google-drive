@@ -42,7 +42,7 @@ const NewFolderModal: React.FC<Props> = ({
   return (
     <Modal title="Create new folder" className="w-96" isOpen={isOpen}>
       <form className="flex flex-col gap-10" onSubmit={createNewFolder}>
-        <label className="w-full max-w-xl rounded-full bg-darkerWhite px-4 py-2">
+        <label className="dark:bg-lightDark w-full max-w-xl rounded-full bg-darkerWhite px-4 py-2 transition-colors">
           <input
             autoFocus
             type="text"

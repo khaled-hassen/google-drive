@@ -40,7 +40,10 @@ function App() {
 
         <Toaster
           position="top-center"
-          toastOptions={{ className: "rounded-full" }}
+          toastOptions={{
+            className:
+              "rounded-full dark:bg-dark dark:text-white transition-colors",
+          }}
         />
       </main>
     </GoogleApiProvider>

@@ -3,6 +3,7 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
@@ -11,6 +12,7 @@ export default {
         darkerWhite: "#F0F2F8",
         lightGray: "#A1A5B0",
         dark: "#0F1215",
+        lightDark: "#1B2027",
         black: "#282828",
         danger: "#C50718",
       },

@@ -6,7 +6,7 @@
 
 @layer base {
     body {
-        @apply text-black font-karla bg-white;
+        @apply text-black font-karla bg-white dark:text-white transition-colors;
     }
 }
 
@@ -16,7 +16,7 @@
     }
 
     .btn-primary {
-        @apply bg-white text-main;
+        @apply bg-white dark:bg-lightDark dark:text-white text-main transition-colors;
     }
 
     .btn-danger {
@@ -28,7 +28,7 @@
     }
 
     .btn-tertiary {
-        @apply bg-darkerWhite;
+        @apply bg-darkerWhite dark:bg-lightDark transition-colors;
     }
 
     .btn-success {

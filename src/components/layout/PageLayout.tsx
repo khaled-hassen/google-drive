@@ -36,7 +36,7 @@ const PageLayout: React.FC<Props> = ({ children }) => {
   }, [location]);
 
   return (
-    <div className="flex max-h-screen w-full flex-col">
+    <div className="flex max-h-screen w-full flex-col bg-white transition-colors dark:bg-dark">
       <Header
         profileInfo={profileInfo}
         onLogout={logout}

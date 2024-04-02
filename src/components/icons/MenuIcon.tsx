@@ -8,7 +8,6 @@ const MenuIcon: React.FC<IconProps> = ({}) => {
       width="24"
       height="24"
       fill="currentColor"
-      className="text-black"
       viewBox="0 0 16 16"
     >
       <path
