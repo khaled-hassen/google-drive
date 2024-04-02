@@ -8,6 +8,7 @@ import GoogleApiProvider from "./components/providers/GoogleApiProvider.tsx";
 import { discoveryDocs, scopes } from "./lib/config.ts";
 import Folder from "./pages/Folder.tsx";
 import Drive from "./pages/Drive.tsx";
+import { Toaster } from "react-hot-toast";
 
 const CLIENT_ID = import.meta.env.VITE_API_GOOGLE_CLIENT_ID as string;
 const API_KEY = import.meta.env.VITE_API_GOOGLE_API_KEY as string;
@@ -34,6 +35,11 @@ function App() {
             <Route path="*" element={<Error404 />} />
           </Routes>
         </Router>
+
+        <Toaster
+          position="top-center"
+          toastOptions={{ className: "rounded-full" }}
+        />
       </main>
     </GoogleApiProvider>
   );

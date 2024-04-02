@@ -16,6 +16,7 @@ import PdfIcon from "../icons/PdfIcon.tsx";
 import { useGoogleDriveApi } from "../../hooks/useGoogleDriveApi.ts";
 import FilledFolderIcon from "../icons/FilledFolderIcon.tsx";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 
 type Props = {
   file: gapi.client.drive.File;
@@ -70,10 +71,20 @@ const FileRow: React.FC<Props> = ({ file, className, onFileDeleted }) => {
 
   async function remove() {
     if (!file.id) return;
-    setDeleteLoading(true);
-    await deleteFile(file.id);
-    setDeleteLoading(false);
-    onFileDeleted(file.id);
+    try {
+      setDeleteLoading(true);
+      await deleteFile(file.id);
+      setDeleteLoading(false);
+      const type =
+        file.mimeType === "application/vnd.google-apps.folder"
+          ? "Folder"
+          : "File";
+      toast.success(`${type} deleted successfully`);
+      onFileDeleted(file.id);
+    } catch (e: any) {
+      toast.error(e.message);
+      setDeleteLoading(false);
+    }
   }
 
   return (

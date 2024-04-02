@@ -5,6 +5,7 @@ import Button from "../shared/Button.tsx";
 import CloseIcon from "../icons/CloseIcon.tsx";
 import { useGoogleDriveApi } from "../../hooks/useGoogleDriveApi.ts";
 import { useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 type Props = {
   isOpen: boolean;
@@ -23,13 +24,19 @@ const NewFolderModal: React.FC<Props> = ({
 
   async function createNewFolder(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setLoading(true);
-    const formData = new FormData(event.currentTarget);
-    const name = formData.get("name") as string;
-    const folderId = await createFolder(name, id);
-    setLoading(false);
-    if (!folderId) return;
-    onFolderCreated(folderId);
+    try {
+      setLoading(true);
+      const formData = new FormData(event.currentTarget);
+      const name = formData.get("name") as string;
+      const folderId = await createFolder(name, id);
+      setLoading(false);
+      if (!folderId) return;
+      toast.success("New folder created successfully");
+      onFolderCreated(folderId);
+    } catch (e: any) {
+      toast.error(e.message);
+      setLoading(false);
+    }
   }
 
   return (

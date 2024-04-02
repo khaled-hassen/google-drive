@@ -5,6 +5,7 @@ import CloseIcon from "../icons/CloseIcon.tsx";
 import { useGoogleDriveApi } from "../../hooks/useGoogleDriveApi.ts";
 import { useParams } from "react-router-dom";
 import FolderPlusIcon from "../icons/FolderPlusIcon.tsx";
+import toast from "react-hot-toast";
 
 type Props = {
   isOpen: boolean;
@@ -26,11 +27,17 @@ const UploadFolderModal: React.FC<Props> = ({
     const relativePath = files[0].webkitRelativePath;
     const folderName = relativePath.split("/")[0];
 
-    setLoading(true);
-    const folderId = await uploadFolder(folderName, files, id);
-    setLoading(false);
-    folderId && onFolderUploaded(folderId);
-    onClose();
+    try {
+      setLoading(true);
+      const folderId = await uploadFolder(folderName, files, id);
+      setLoading(false);
+      folderId && onFolderUploaded(folderId);
+      toast.success("Folder uploaded successfully");
+      onClose();
+    } catch (e: any) {
+      toast.error(e.message);
+      setLoading(false);
+    }
   }
 
   return (

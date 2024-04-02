@@ -115,7 +115,6 @@ export function useGoogleDriveApi(onReady?: OnReady) {
     if (!files.current) return;
 
     const promises = [];
-
     for (let i = 0; i < fileList.length; i++) {
       const file = fileList.item(i);
       if (!file) continue;
@@ -145,7 +144,11 @@ export function useGoogleDriveApi(onReady?: OnReady) {
       );
     }
 
-    await Promise.all(promises);
+    const results = await Promise.allSettled(promises);
+    if (
+      results.some((result) => result.status === "rejected" || !result.value.ok)
+    )
+      throw new Error("Failed to upload files");
   }
 
   async function uploadFolder(
