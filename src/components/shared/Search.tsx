@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useGoogleDriveApi } from "../../hooks/useGoogleDriveApi.ts";
 import PageTitle from "./PageTitle.tsx";
 import FilesTable from "./FilesTable.tsx";
@@ -17,7 +17,7 @@ const Search: React.FC = ({}) => {
     setFiles([]);
     searchFiles(searchParams.get("q") || "")
       .then((files) => setFiles(files))
-      .catch((e) => toast.error("An error occurred while searching"));
+      .catch(() => toast.error("An error occurred while searching"));
     setFiles(files);
   }, [ready, searchParams]);
 

@@ -58,7 +58,9 @@ const Header: React.FC<Props> = ({
           onSubmit={search}
         >
           <label className="flex flex-1 items-center gap-4">
-            <SearchIcon />
+            <span className="text-lightGray">
+              <SearchIcon />
+            </span>
             <input
               name="search"
               type="text"
