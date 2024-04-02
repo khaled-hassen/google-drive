@@ -1,11 +1,11 @@
 import React from "react";
 import { IconProps } from "./IconProps.ts";
 
-const FolderPlusIcon: React.FC<IconProps> = ({}) => {
+const FolderPlusIcon: React.FC<IconProps> = ({ size }) => {
   return (
     <svg
-      width="23"
-      height="19"
+      width={size ? size + 4 : 23}
+      height={size || 19}
       viewBox="0 0 23 19"
       fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"

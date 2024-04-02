@@ -114,26 +114,48 @@ export function useGoogleDriveApi(onReady?: OnReady) {
   async function uploadFiles(fileList: FileList, parentId?: string) {
     if (!files.current) return;
 
+    const promises = [];
+
     for (let i = 0; i < fileList.length; i++) {
       const file = fileList.item(i);
       if (!file) continue;
 
-      const fileMetadata = {
+      const data = new FormData();
+      const metaData = {
         name: file.name,
+        mimeType: file.type,
         parents: parentId ? [parentId] : [],
       };
-      const media = {
-        mimeType: file.type,
-        body: file,
-      };
-
-      await files.current.create({
-        fields: "id",
-        resource: fileMetadata,
-        // @ts-ignore
-        media,
-      });
+      data.append(
+        "metadata",
+        new Blob([JSON.stringify(metaData)], { type: "application/json" }),
+      );
+      data.append("file", file);
+      promises.push(
+        fetch(
+          "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fileds=id",
+          {
+            method: "POST",
+            headers: new Headers({
+              Authorization: `Bearer ${gapi.auth.getToken().access_token}`,
+            }),
+            body: data,
+          },
+        ),
+      );
     }
+
+    await Promise.all(promises);
+  }
+
+  async function uploadFolder(
+    folderName: string,
+    fileList: FileList,
+    parentId?: string,
+  ) {
+    const folderId = await createFolder(folderName, parentId);
+    await uploadFiles(fileList, folderId);
+    return folderId;
   }
 
   useEffect(() => {
@@ -156,5 +178,6 @@ export function useGoogleDriveApi(onReady?: OnReady) {
     getFolder,
     createFolder,
     uploadFiles,
+    uploadFolder,
   };
 }

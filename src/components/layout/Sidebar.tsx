@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import Button from "../shared/Button.tsx";
 import FileIcon from "../icons/FileIcon.tsx";
 import FolderIcon from "../icons/FolderIcon.tsx";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import HomeIcon from "../icons/HomeIcon.tsx";
-import { convertBytesToUnit, cn } from "../../lib/utils.ts";
+import { cn, convertBytesToUnit } from "../../lib/utils.ts";
 import DriveIcon from "../icons/DriveIcon.tsx";
 import StorageIcon from "../icons/StorageIcon.tsx";
 import FolderPlusIcon from "../icons/FolderPlusIcon.tsx";
 import NewFolderModal from "../Modals/NewFolderModal.tsx";
 import UploadFilesModal from "../Modals/UploadFilesModal.tsx";
+import UploadFolderModal from "../Modals/UploadFolderModal.tsx";
 
 type Props = {
   storageInfo: { total: number; used: number };
@@ -24,7 +25,19 @@ function percentUsed(used: number, total: number) {
 const Sidebar: React.FC<Props> = ({ storageInfo, isOpen }) => {
   const [isNewFolderModalOpen, setIsNewFolderModalOpen] = useState(false);
   const [isUploadFilesModalOpen, setIsUploadFilesModalOpen] = useState(false);
+  const [isUploadFolderModalOpen, setIsUploadFolderModalOpen] = useState(false);
+
   const navigate = useNavigate();
+  const location = useLocation();
+
+  function handleFilesUploaded() {
+    if (location.pathname === "/home") navigate("/drive");
+    else navigate(location.pathname);
+  }
+
+  function handleFolderUploaded(id: string) {
+    navigate(`/folder/${id}`);
+  }
 
   return (
     <>
@@ -50,6 +63,7 @@ const Sidebar: React.FC<Props> = ({ storageInfo, isOpen }) => {
               variant="secondary"
               className="overflow-hidden"
               titleClassName="whitespace-nowrap"
+              onClick={() => setIsUploadFolderModalOpen(true)}
             />
             <Button
               title="Create new folder"
@@ -121,7 +135,14 @@ const Sidebar: React.FC<Props> = ({ storageInfo, isOpen }) => {
 
       <UploadFilesModal
         isOpen={isUploadFilesModalOpen}
+        onFilesUploaded={handleFilesUploaded}
         onClose={() => setIsUploadFilesModalOpen(false)}
+      />
+
+      <UploadFolderModal
+        isOpen={isUploadFolderModalOpen}
+        onFolderUploaded={handleFolderUploaded}
+        onClose={() => setIsUploadFolderModalOpen(false)}
       />
     </>
   );

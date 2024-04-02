@@ -4,60 +4,58 @@ import Button from "../shared/Button.tsx";
 import CloseIcon from "../icons/CloseIcon.tsx";
 import { useGoogleDriveApi } from "../../hooks/useGoogleDriveApi.ts";
 import { useParams } from "react-router-dom";
-import FilePlusIcon from "../icons/FilePlusIcon.tsx";
+import FolderPlusIcon from "../icons/FolderPlusIcon.tsx";
 
 type Props = {
   isOpen: boolean;
-  onFilesUploaded(): void;
+  onFolderUploaded(id: string): void;
   onClose(): void;
 };
 
-const UploadFilesModal: React.FC<Props> = ({
+const UploadFolderModal: React.FC<Props> = ({
   isOpen,
   onClose,
-  onFilesUploaded,
+  onFolderUploaded,
 }) => {
-  const { uploadFiles } = useGoogleDriveApi();
+  const { uploadFolder } = useGoogleDriveApi();
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
 
-  async function uploadNewFiles(files: FileList | null) {
+  async function uploadNewFolder(files: FileList | null) {
     if (!files) return;
+    const relativePath = files[0].webkitRelativePath;
+    const folderName = relativePath.split("/")[0];
+
     setLoading(true);
-    await uploadFiles(files, id);
+    const folderId = await uploadFolder(folderName, files, id);
     setLoading(false);
-    onFilesUploaded();
+    folderId && onFolderUploaded(folderId);
     onClose();
   }
 
   return (
-    <Modal title="Upload new files" isOpen={isOpen}>
+    <Modal title="Upload new folder" isOpen={isOpen}>
       <form className="flex flex-col gap-10">
-        <label
-          className="grid h-96 w-[30rem] place-content-center rounded-2xl border border-dashed border-lightGray"
-          onDragOver={(e) => e.preventDefault()}
-          onDrop={async (e) => {
-            e.preventDefault();
-            await uploadNewFiles(e.dataTransfer.files);
-          }}
-        >
+        <label className="grid h-96 w-[30rem] place-content-center rounded-2xl border border-dashed border-lightGray">
           <span className="flex flex-col items-center gap-6 text-lightGray">
-            <FilePlusIcon />
+            <FolderPlusIcon size={80} />
             {loading ? (
-              <span className="animate-pulse">Uploading files</span>
+              <span className="animate-pulse">Uploading folder</span>
             ) : (
-              <span className="flex flex-col items-center">
-                <span>Click here to select files</span>
-                <span>or</span>
-                <span>Drag and drop your files here</span>
-              </span>
+              <span>Click here to select folder</span>
             )}
           </span>
           <input
             type="file"
             hidden
+            // @ts-ignore
+            webkitdirectory=""
+            directory=""
+            mozdirectory=""
+            msdirectory=""
+            odirectory=""
             multiple
-            onChange={(e) => uploadNewFiles(e.target.files)}
+            onChange={(e) => uploadNewFolder(e.target.files)}
           />
         </label>
         <div className="flex items-center justify-center gap-8">
@@ -75,4 +73,4 @@ const UploadFilesModal: React.FC<Props> = ({
   );
 };
 
-export default UploadFilesModal;
+export default UploadFolderModal;
