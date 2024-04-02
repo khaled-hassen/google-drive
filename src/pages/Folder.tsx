@@ -25,7 +25,6 @@ const Folder: React.FC = ({}) => {
         setFiles(files);
       })
       .catch(() => navigate("/404"));
-    setFiles(files);
   }, [ready, location]);
 
   return (

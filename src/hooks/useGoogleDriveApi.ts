@@ -160,6 +160,14 @@ export function useGoogleDriveApi(onReady?: OnReady) {
     await uploadFiles(fileList, folderId);
     return folderId;
   }
+  async function searchFiles(query: string | undefined) {
+    if (!files.current) return [];
+    const response = await files.current.list({
+      q: `name contains '${query}'`,
+      fields: "files(id, name, owners, modifiedTime, size, mimeType)",
+    });
+    return response.result.files || [];
+  }
 
   useEffect(() => {
     if (scriptsLoaded) {
@@ -182,5 +190,6 @@ export function useGoogleDriveApi(onReady?: OnReady) {
     createFolder,
     uploadFiles,
     uploadFolder,
+    searchFiles,
   };
 }

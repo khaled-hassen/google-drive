@@ -9,6 +9,7 @@ import { discoveryDocs, scopes } from "./lib/config.ts";
 import Folder from "./pages/Folder.tsx";
 import Drive from "./pages/Drive.tsx";
 import { Toaster } from "react-hot-toast";
+import Search from "./components/shared/Search.tsx";
 
 const CLIENT_ID = import.meta.env.VITE_API_GOOGLE_CLIENT_ID as string;
 const API_KEY = import.meta.env.VITE_API_GOOGLE_API_KEY as string;
@@ -28,6 +29,7 @@ function App() {
               <Route path="/home" element={<Home />} />
               <Route path="/drive" element={<Drive />} />
               <Route path="/folder/:id" element={<Folder />} />
+              <Route path="/search" element={<Search />} />
             </Route>
             <Route element={<PublicRoutes />}>
               <Route path="/" element={<Login />} />

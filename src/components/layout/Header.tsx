@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../icons/Logo.tsx";
 import SearchIcon from "../icons/SearchIcon.tsx";
 import Button from "../shared/Button.tsx";
@@ -9,6 +9,7 @@ import DownChevronIcon from "../icons/DownChevronIcon.tsx";
 import { cn } from "../../lib/utils.ts";
 import MenuIcon from "../icons/MenuIcon.tsx";
 import Avatar from "../shared/Avatar.tsx";
+import CircleRightArrow from "../icons/CircleRightArrow.tsx";
 
 type Props = {
   profileInfo: { profileImage: string; fullName: string };
@@ -24,6 +25,14 @@ const Header: React.FC<Props> = ({
   onLogout,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showSearchBtn, setShowSearchBtn] = useState(false);
+  const navigate = useNavigate();
+
+  function search(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const search = new FormData(e.currentTarget).get("search") as string;
+    navigate(`/search?q=${search}`);
+  }
 
   return (
     <header className="relative">
@@ -44,14 +53,29 @@ const Header: React.FC<Props> = ({
             </p>
           </Link>
         </div>
-        <label className="mx-auto hidden w-full max-w-xl items-center gap-4 rounded-full bg-darkerWhite px-4 py-2 md:flex">
-          <SearchIcon />
-          <input
-            type="text"
-            className="min-w-0 flex-1 bg-transparent focus:outline-none"
-            placeholder="Search drive ..."
-          />
-        </label>
+        <form
+          className="mx-auto hidden w-full max-w-xl items-center gap-4 rounded-full bg-darkerWhite px-4 py-2 md:flex"
+          onSubmit={search}
+        >
+          <label className="flex flex-1 items-center gap-4">
+            <SearchIcon />
+            <input
+              name="search"
+              type="text"
+              className="min-w-0 flex-1 bg-transparent focus:outline-none"
+              placeholder="Search drive ..."
+              onFocus={() => setShowSearchBtn(true)}
+              onBlur={() => setShowSearchBtn(false)}
+            />
+          </label>
+          <button
+            className={cn("scale-0 text-dark transition-transform", {
+              "scale-100": showSearchBtn,
+            })}
+          >
+            <CircleRightArrow />
+          </button>
+        </form>
         <div className="flex items-center gap-4">
           <div className="hidden xs:block">
             <Button
