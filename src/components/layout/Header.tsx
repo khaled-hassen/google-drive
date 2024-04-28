@@ -19,6 +19,27 @@ type Props = {
   onLogout(): void;
 };
 
+/**
+ * A header component that contains the logo, search bar, and user profile information.
+ *
+ * This component uses the `useNavigate` hook from `react-router-dom` to navigate to the search results page when a search is submitted. It also uses the `useEffect` hook to check the user's preferred color scheme and set the theme accordingly when the component is mounted.
+ *
+ * @property profileInfo - An object containing the profile image URL and full name of the user.
+ * @property isSidebarOpen - A boolean indicating whether the sidebar is open.
+ * @property onToggleSidebar - A function to toggle the sidebar.
+ * @property onLogout - A function to log out the user.
+ *
+ * @example
+ * import Header from "./Header";
+ *
+ * // In a React component
+ * <Header
+ *   profileInfo={{ profileImage: "https://example.com/image.jpg", fullName: "John Doe" }}
+ *   isSidebarOpen={isSidebarOpen}
+ *   onToggleSidebar={toggleSidebar}
+ *   onLogout={logout}
+ * />
+ */
 const Header: React.FC<Props> = ({
   profileInfo,
   isSidebarOpen,
@@ -30,12 +51,30 @@ const Header: React.FC<Props> = ({
   const [isDarkMode, setIsDarkMode] = useState(false);
   const navigate = useNavigate();
 
+  /**
+   * A function that handles the search operation in the application.
+   *
+   * This function prevents the default form submission event, retrieves the search query from the form data, and navigates to the search results page with the search query as a URL parameter.
+   *
+   * @param e - The form submission event.
+   *
+   * @example
+   * search(e); // Handles the search operation
+   */
   function search(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const search = new FormData(e.currentTarget).get("search") as string;
     navigate(`/search?q=${search}`);
   }
 
+  /**
+   * A function that toggles the theme of the application.
+   *
+   * This function checks if the current theme is dark mode. If it is, it removes the "dark" class from the document's root element and sets the "darkMode" item in the local storage to "0". If the current theme is not dark mode, it adds the "dark" class to the document's root element and sets the "darkMode" item in the local storage to "1". It then toggles the `isDarkMode` state.
+   *
+   * @example
+   * toggleTheme(); // Toggles the theme of the application
+   */
   function toggleTheme() {
     if (isDarkMode) {
       document.documentElement.classList.remove("dark");
@@ -47,6 +86,13 @@ const Header: React.FC<Props> = ({
     setIsDarkMode((val) => !val);
   }
 
+  /**
+   * A React effect hook that sets the theme of the application based on the user's preferred color scheme or the stored theme in local storage.
+   *
+   * This effect runs once when the component is mounted. It first checks if there is a "darkMode" item in the local storage. If there is none, it checks the user's preferred color scheme using the `window.matchMedia` function. If the preferred color scheme is dark, it adds the "dark" class to the document's root element, sets the `isDarkMode` state to `true`, and stores "1" in the "darkMode" item in the local storage. If the preferred color scheme is not dark, it removes the "dark" class from the document's root element, sets the `isDarkMode` state to `false`, and stores "0" in the "darkMode" item in the local storage.
+   *
+   * If there is a "darkMode" item in the local storage, it checks if the value is "1". If it is, it adds the "dark" class to the document's root element and sets the `isDarkMode` state to `true`. If it is not, it removes the "dark" class from the document's root element and sets the `isDarkMode` state to `false`.
+   */
   useEffect(() => {
     const darkMode = localStorage.getItem("darkMode");
     if (darkMode === null) {
@@ -73,11 +119,11 @@ const Header: React.FC<Props> = ({
 
   return (
     <header className="relative">
-      <div className="relative z-[999] flex grid-cols-[auto_1fr_auto] items-center justify-between gap-6 bg-white p-6 transition-colors md:grid dark:bg-dark">
+      <div className="relative z-[999] flex grid-cols-[auto_1fr_auto] items-center justify-between gap-6 bg-white p-6 transition-colors dark:bg-dark md:grid">
         <div className="flex items-center gap-4">
           <button
             className={cn(
-              "text-black transition-all lg:hidden dark:text-white",
+              "text-black transition-all dark:text-white lg:hidden",
               { "rotate-90": isSidebarOpen },
             )}
             onClick={onToggleSidebar}
@@ -92,7 +138,7 @@ const Header: React.FC<Props> = ({
           </Link>
         </div>
         <form
-          className="dark:bg-lightDark mx-auto hidden w-full max-w-xl items-center gap-4 rounded-full bg-darkerWhite px-4 py-2 transition-colors md:flex"
+          className="mx-auto hidden w-full max-w-xl items-center gap-4 rounded-full bg-darkerWhite px-4 py-2 transition-colors dark:bg-lightDark md:flex"
           onSubmit={search}
         >
           <label className="flex flex-1 items-center gap-4">
@@ -109,12 +155,9 @@ const Header: React.FC<Props> = ({
             />
           </label>
           <button
-            className={cn(
-              "scale-0 transition-colors transition-transform dark:text-white",
-              {
-                "scale-100": showSearchBtn,
-              },
-            )}
+            className={cn("scale-0 transition-all dark:text-white", {
+              "scale-100": showSearchBtn,
+            })}
           >
             <CircleRightArrow />
           </button>
@@ -161,7 +204,7 @@ const Header: React.FC<Props> = ({
 
       <div
         className={cn(
-          "absolute left-0 top-full z-[998] flex w-full -translate-y-full flex-col gap-4 bg-white p-6 transition-all md:hidden dark:bg-dark",
+          "absolute left-0 top-full z-[998] flex w-full -translate-y-full flex-col gap-4 bg-white p-6 transition-all dark:bg-dark md:hidden",
           {
             "translate-y-0 shadow-[0_30px_20px_0_#0000001a] transition-colors dark:shadow-[0_30px_20px_0_#0F1215]":
               isMenuOpen,
@@ -190,7 +233,7 @@ const Header: React.FC<Props> = ({
           />
         </div>
         <form
-          className="dark:bg-lightDark flex items-center gap-4 rounded-full bg-darkerWhite px-4 py-2 transition-colors"
+          className="flex items-center gap-4 rounded-full bg-darkerWhite px-4 py-2 transition-colors dark:bg-lightDark"
           onSubmit={search}
         >
           <label className="flex flex-1 items-center gap-4">

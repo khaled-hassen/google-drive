@@ -24,6 +24,20 @@ type Props = {
   onFileDeleted(id: string): void;
 };
 
+/**
+ * A utility function that returns an icon based on the MIME type of a file.
+ *
+ * This function uses a switch statement to check the MIME type of a file and returns a corresponding icon component. It supports various file types including PDF, Word documents, presentations, spreadsheets, and folders. If the MIME type does not match any of the supported types, it returns a default file icon.
+ *
+ * @param mimeType - The MIME type of the file.
+ * @returns A React component representing the icon for the file type.
+ *
+ * @example
+ * import { getFileTypeIcon } from "./utils";
+ *
+ * // In a React component
+ * const fileIcon = getFileTypeIcon(file.mimeType);
+ */
 function getFileTypeIcon(mimeType: string | undefined) {
   switch (mimeType) {
     case "application/pdf":
@@ -51,10 +65,43 @@ function getFileTypeIcon(mimeType: string | undefined) {
   }
 }
 
+/**
+ * A utility function that checks if a file is a folder based on its MIME type.
+ *
+ * This function checks if the MIME type of a file is "application/vnd.google-apps.folder", which is the MIME type for Google Drive folders. If it is, the function returns true, indicating that the file is a folder. Otherwise, it returns false.
+ *
+ * @param mimeType - The MIME type of the file.
+ * @returns A boolean indicating whether the file is a folder.
+ *
+ * @example
+ * import { isFolder } from "./utils";
+ *
+ * // In a React component
+ * const fileIsFolder = isFolder(file.mimeType);
+ */
 function isFolder(mimeType: string | undefined) {
   return mimeType === "application/vnd.google-apps.folder";
 }
 
+/**
+ * A FileRow component that displays a row of file information.
+ *
+ * This component uses the `Avatar` component to display the owner's avatar, the `Button` component to display the download and delete buttons, and various utility functions to format the file size and date. It also uses the `useGoogleDriveApi` hook to interact with the Google Drive API.
+ *
+ * @property file - The file information.
+ * @property className - Optional additional CSS classes to apply to the file row.
+ * @property onFileDeleted - A callback function that is called when a file is deleted.
+ *
+ * @example
+ * import FileRow from "./FileRow";
+ *
+ * // In a React component
+ * <FileRow
+ *   file={file}
+ *   className="file-row"
+ *   onFileDeleted={(id) => handleFileDeleted(id)}
+ * />
+ */
 const FileRow: React.FC<Props> = ({ file, className, onFileDeleted }) => {
   const [downloadLoading, setDownloadLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);

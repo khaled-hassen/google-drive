@@ -8,6 +8,26 @@ type Props = {
   onTitleClick?(): void;
 };
 
+/**
+ * A PageTitle component that displays a page title with an icon.
+ *
+ * This component uses the `Icon` component to display an icon next to the title. It also supports an optional `onTitleClick` function that is called when the title is clicked.
+ *
+ * @property title - The title to display.
+ * @property Icon - The icon to display next to the title.
+ * @property onTitleClick - Optional. A function that is called when the title is clicked.
+ *
+ * @example
+ * import PageTitle from "./PageTitle";
+ * import { ReactComponent as HomeIcon } from "../../assets/icons/home.svg";
+ *
+ * // In a React component
+ * <PageTitle
+ *   title="Home"
+ *   Icon={HomeIcon}
+ *   onTitleClick={() => console.log("Title clicked")}
+ * />
+ */
 const PageTitle: React.FC<Props> = ({ title, Icon, onTitleClick }) => {
   return (
     <div

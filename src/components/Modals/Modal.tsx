@@ -9,6 +9,28 @@ type Props = {
   className?: string;
 };
 
+/**
+ * A modal component that can be used to display content in a modal dialog.
+ *
+ * This component uses the `createPortal` function from `react-dom` to render the modal content into a new 'subtree' outside of the parent component's DOM hierarchy.
+ *
+ * @property title - The title of the modal.
+ * @property isOpen - A boolean indicating whether the modal is open.
+ * @property children - The children components to be rendered within this modal.
+ * @property className - An optional string for additional CSS classes.
+ *
+ * @example
+ * import Modal from "./Modal";
+ *
+ * // In a React component
+ * <Modal
+ *   title="My Modal"
+ *   isOpen={isModalOpen}
+ *   className="my-modal"
+ * >
+ *   <p>This is my modal content.</p>
+ * </Modal>
+ */
 const Modal: React.FC<Props> = ({ title, isOpen, className, children }) => {
   if (!isOpen) return null;
   return createPortal(

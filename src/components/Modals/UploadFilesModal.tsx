@@ -13,6 +13,25 @@ type Props = {
   onClose(): void;
 };
 
+/**
+ * An UploadFilesModal component that allows the user to upload new files.
+ *
+ * This component uses the `useGoogleDriveApi` hook to upload new files to Google Drive. It also uses the `useState` hook to manage the loading state, and the `useParams` hook from `react-router-dom` to get the current folder ID. It also uses the `toast` function from `react-hot-toast` to display notifications.
+ *
+ * @property isOpen - A boolean indicating whether the modal is open.
+ * @property onClose - A function to close the modal.
+ * @property onFilesUploaded - A function to be called when new files are uploaded.
+ *
+ * @example
+ * import UploadFilesModal from "./UploadFilesModal";
+ *
+ * // In a React component
+ * <UploadFilesModal
+ *   isOpen={isUploadFilesModalOpen}
+ *   onClose={closeUploadFilesModal}
+ *   onFilesUploaded={handleFilesUploaded}
+ * />
+ */
 const UploadFilesModal: React.FC<Props> = ({
   isOpen,
   onClose,
@@ -22,6 +41,13 @@ const UploadFilesModal: React.FC<Props> = ({
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
 
+  /**
+   * An asynchronous function that uploads new files.
+   *
+   * This function checks if the files are provided. If not, it returns. It then sets the loading state to `true`, calls the `uploadFiles` function from the `useGoogleDriveApi` hook with the files and the current folder ID, and sets the loading state to `false`. It then calls the `onFilesUploaded` function, displays a success notification, and calls the `onClose` function. If an error occurs during the process, it displays an error notification and sets the loading state to `false`.
+   *
+   * @param files - The files to be uploaded.
+   */
   async function uploadNewFiles(files: FileList | null) {
     if (!files) return;
     try {

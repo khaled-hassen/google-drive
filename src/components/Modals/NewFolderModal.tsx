@@ -13,6 +13,25 @@ type Props = {
   onFolderCreated(folderId: string): void;
 };
 
+/**
+ * A NewFolderModal component that allows the user to create a new folder.
+ *
+ * This component uses the `useGoogleDriveApi` hook to create a new folder in Google Drive. It also uses the `useState` hook to manage the loading state, and the `useParams` hook from `react-router-dom` to get the current folder ID. It also uses the `toast` function from `react-hot-toast` to display notifications.
+ *
+ * @property isOpen - A boolean indicating whether the modal is open.
+ * @property onClose - A function to close the modal.
+ * @property onFolderCreated - A function to be called when a new folder is created. It receives the ID of the new folder as a parameter.
+ *
+ * @example
+ * import NewFolderModal from "./NewFolderModal";
+ *
+ * // In a React component
+ * <NewFolderModal
+ *   isOpen={isNewFolderModalOpen}
+ *   onClose={closeNewFolderModal}
+ *   onFolderCreated={handleNewFolderCreated}
+ * />
+ */
 const NewFolderModal: React.FC<Props> = ({
   isOpen,
   onClose,
@@ -22,6 +41,13 @@ const NewFolderModal: React.FC<Props> = ({
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
 
+  /**
+   * An asynchronous function that creates a new folder.
+   *
+   * This function prevents the default form submission, creates a new FormData object from the form event, and gets the name of the new folder from the form data. If the name is not provided, it displays an error notification and returns. It then sets the loading state to `true`, calls the `createFolder` function from the `useGoogleDriveApi` hook with the name and the current folder ID, and sets the loading state to `false`. If the `createFolder` function does not return a folder ID, it returns. Otherwise, it displays a success notification and calls the `onFolderCreated` function with the new folder ID. If an error occurs during the process, it displays an error notification and sets the loading state to `false`.
+   *
+   * @param event - The form event.
+   */
   async function createNewFolder(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     try {

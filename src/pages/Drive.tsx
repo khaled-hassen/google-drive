@@ -4,6 +4,17 @@ import { useGoogleDriveApi } from "../hooks/useGoogleDriveApi.ts";
 import FilesTable from "../components/shared/FilesTable.tsx";
 import DriveIcon from "../components/icons/DriveIcon.tsx";
 
+/**
+ * A Drive component that displays the files in the user's Google Drive.
+ *
+ * This component uses the `useGoogleDriveApi` hook to interact with the Google Drive API and get the files in the user's Google Drive. It also uses the `PageTitle` and `FilesTable` components to display the files.
+ *
+ * @example
+ * import Drive from "./Drive";
+ *
+ * // In a React component
+ * <Drive />
+ */
 const Drive: React.FC = ({}) => {
   const [files, setFiles] = useState<gapi.client.drive.File[]>([]);
 

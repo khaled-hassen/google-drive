@@ -5,6 +5,17 @@ import Button from "../components/shared/Button.tsx";
 import BgPattern from "../assets/bg-pattern.svg";
 import HomeIcon from "../components/icons/HomeIcon.tsx";
 
+/**
+ * A Error404 component that displays a 404 error page.
+ *
+ * This component uses the `Logo` component to display the logo and the `Button` component to display a button that redirects to the home page. It also uses the `Link` component from `react-router-dom` to create a link to the home page.
+ *
+ * @example
+ * import Error404 from "./Error404";
+ *
+ * // In a React component
+ * <Error404 />
+ */
 const Error404: React.FC = ({}) => {
   return (
     <div

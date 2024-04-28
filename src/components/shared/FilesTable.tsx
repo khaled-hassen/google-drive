@@ -7,6 +7,23 @@ type Props = {
   onFileDeleted(id: string): void;
 };
 
+/**
+ * A FilesTable component that displays a table of files.
+ *
+ * This component uses the `FileRow` component to display each row of file information. It also uses the `ListIcon` component to display an icon when there are no files.
+ *
+ * @property files - An array of files to display.
+ * @property onFileDeleted - A callback function that is called when a file is deleted.
+ *
+ * @example
+ * import FilesTable from "./FilesTable";
+ *
+ * // In a React component
+ * <FilesTable
+ *   files={files}
+ *   onFileDeleted={(id) => handleFileDeleted(id)}
+ * />
+ */
 const FilesTable: React.FC<Props> = ({ files, onFileDeleted }) => {
   return (
     <div className="overflow-auto">

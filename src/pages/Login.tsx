@@ -7,9 +7,19 @@ import HeroImage from "../assets/hero.png";
 import BgPattern from "../assets/bg-pattern.svg";
 import { useGoogleLogin } from "../hooks/useGoogleLogin.ts";
 
+/**
+ * A Login component that allows users to log in with their Google account.
+ *
+ * This component uses the `useGoogleLogin` hook to handle the Google login process. When the user clicks the "Login with Google" button, the `login` function from the `useGoogleLogin` hook is called, which initiates the Google login process. If the login is successful, the user is redirected to the home page.
+ *
+ * @example
+ * import Login from "./Login";
+ *
+ * // In a React component
+ * <Login />
+ */
 const Login: React.FC = ({}) => {
   const navigate = useNavigate();
-
   const login = useGoogleLogin(() => navigate("/home"));
 
   return (

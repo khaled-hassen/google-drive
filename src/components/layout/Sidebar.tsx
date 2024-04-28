@@ -17,11 +17,40 @@ type Props = {
   isOpen: boolean;
 };
 
+/**
+ * A function that calculates the percentage of used storage.
+ *
+ * This function takes the used storage and the total storage as parameters. If the total storage is 0, it returns 0 to avoid division by zero. Otherwise, it returns the percentage of the used storage.
+ *
+ * @param used - The used storage.
+ * @param total - The total storage.
+ * @returns The percentage of the used storage.
+ *
+ * @example
+ * percentUsed(500000, 1000000); // Returns 50
+ */
 function percentUsed(used: number, total: number) {
   if (total === 0) return 0;
   return (used * 100) / total;
 }
 
+/**
+ * A Sidebar component that contains various navigation and action buttons, and displays the user's storage usage.
+ *
+ * This component uses the `useNavigate` and `useLocation` hooks from `react-router-dom` to navigate to different pages and check the current location. It also uses the `useState` hook to manage the states of the modals and the sidebar.
+ *
+ * @property storageInfo - An object containing the total and used storage of the user.
+ * @property isOpen - A boolean indicating whether the sidebar is open.
+ *
+ * @example
+ * import Sidebar from "./Sidebar";
+ *
+ * // In a React component
+ * <Sidebar
+ *   storageInfo={{ total: 1000000, used: 500000 }}
+ *   isOpen={isSidebarOpen}
+ * />
+ */
 const Sidebar: React.FC<Props> = ({ storageInfo, isOpen }) => {
   const [isNewFolderModalOpen, setIsNewFolderModalOpen] = useState(false);
   const [isUploadFilesModalOpen, setIsUploadFilesModalOpen] = useState(false);

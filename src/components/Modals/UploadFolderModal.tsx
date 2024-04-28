@@ -13,6 +13,25 @@ type Props = {
   onClose(): void;
 };
 
+/**
+ * An UploadFolderModal component that allows the user to upload a new folder.
+ *
+ * This component uses the `useGoogleDriveApi` hook to upload a new folder to Google Drive. It also uses the `useState` hook to manage the loading state, and the `useParams` hook from `react-router-dom` to get the current folder ID. It also uses the `toast` function from `react-hot-toast` to display notifications.
+ *
+ * @property isOpen - A boolean indicating whether the modal is open.
+ * @property onClose - A function to close the modal.
+ * @property onFolderUploaded - A function to be called when a new folder is uploaded. It receives the ID of the new folder as a parameter.
+ *
+ * @example
+ * import UploadFolderModal from "./UploadFolderModal";
+ *
+ * // In a React component
+ * <UploadFolderModal
+ *   isOpen={isUploadFolderModalOpen}
+ *   onClose={closeUploadFolderModal}
+ *   onFolderUploaded={handleFolderUploaded}
+ * />
+ */
 const UploadFolderModal: React.FC<Props> = ({
   isOpen,
   onClose,
@@ -22,6 +41,13 @@ const UploadFolderModal: React.FC<Props> = ({
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
 
+  /**
+   * An asynchronous function that uploads a new folder.
+   *
+   * This function checks if the files are provided. If not, it returns. It then extracts the relative path of the first file and uses it to determine the folder name. It then sets the loading state to `true`, calls the `uploadFolder` function from the `useGoogleDriveApi` hook with the folder name, the files, and the current folder ID, and sets the loading state to `false`. If the `uploadFolder` function returns a folder ID, it calls the `onFolderUploaded` function with the new folder ID, displays a success notification, and calls the `onClose` function. If an error occurs during the process, it displays an error notification and sets the loading state to `false`.
+   *
+   * @param files - The files to be uploaded.
+   */
   async function uploadNewFolder(files: FileList | null) {
     if (!files) return;
     const relativePath = files[0].webkitRelativePath;

@@ -10,6 +10,21 @@ type Props = {
   children: React.ReactNode;
 };
 
+/**
+ * A PageLayout component that serves as the main layout for the pages of the application.
+ *
+ * This component uses the `useNavigate` and `useLocation` hooks from `react-router-dom` to navigate to different pages and check the current location. It also uses the `useState` and `useEffect` hooks to manage the states of the profile info, storage info, and the sidebar, and to close the sidebar when the location changes. It also uses the `useGoogleLogout`, `useGooglePeopleApi`, and `useGoogleDriveApi` hooks to log out from Google, get the profile info, and get the storage info, respectively.
+ *
+ * @property children - The children components to be rendered inside the layout.
+ *
+ * @example
+ * import PageLayout from "./PageLayout";
+ *
+ * // In a React component
+ * <PageLayout>
+ *   // Children components
+ * </PageLayout>
+ */
 const PageLayout: React.FC<Props> = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();

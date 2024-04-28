@@ -7,11 +7,26 @@ type Props = {
   folder: gapi.client.drive.File;
 };
 
+/**
+ * A Folder component that displays a folder with its name, owners, and last modified date.
+ *
+ * This component uses the `Avatar` component to display the owner's avatar and the `formatDate` function to format the last modified date. It also uses the `Link` component from `react-router-dom` to make the folder clickable and navigate to the folder's page when clicked.
+ *
+ * @property folder - The folder information.
+ *
+ * @example
+ * import Folder from "./Folder";
+ *
+ * // In a React component
+ * <Folder
+ *   folder={folder}
+ * />
+ */
 const Folder: React.FC<Props> = ({ folder }) => {
   return (
     <Link
       to={`/folder/${folder.id}`}
-      className="dark:text-lightDark group relative text-darkerWhite transition-colors hover:text-main dark:hover:text-main"
+      className="group relative text-darkerWhite transition-colors hover:text-main dark:text-lightDark dark:hover:text-main"
     >
       <svg
         viewBox="0 0 297 210"

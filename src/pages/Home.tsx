@@ -5,6 +5,17 @@ import { useGoogleDriveApi } from "../hooks/useGoogleDriveApi.ts";
 import Folder from "../components/shared/Folder.tsx";
 import FilesTable from "../components/shared/FilesTable.tsx";
 
+/**
+ * A Home component that displays the recent folders and files.
+ *
+ * This component uses the `useGoogleDriveApi` hook to interact with the Google Drive API and get the recent folders and files. It also uses the `PageTitle`, `Folder`, and `FilesTable` components to display the page title, the recent folders, and the recent files.
+ *
+ * @example
+ * import Home from "./Home";
+ *
+ * // In a React component
+ * <Home />
+ */
 const Home: React.FC = ({}) => {
   const [recentFolders, setRecentFolders] = useState<gapi.client.drive.File[]>(
     [],

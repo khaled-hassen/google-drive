@@ -9,11 +9,22 @@ import { discoveryDocs, scopes } from "./lib/config.ts";
 import Folder from "./pages/Folder.tsx";
 import Drive from "./pages/Drive.tsx";
 import { Toaster } from "react-hot-toast";
-import Search from "./components/shared/Search.tsx";
+import Search from "./pages/Search.tsx";
 
 const CLIENT_ID = import.meta.env.VITE_API_GOOGLE_CLIENT_ID as string;
 const API_KEY = import.meta.env.VITE_API_GOOGLE_API_KEY as string;
 
+/**
+ * The App component that serves as the main entry point of the application.
+ *
+ * This component uses the `GoogleApiProvider` to provide the Google API context to the rest of the application. It also uses the `react-router-dom` library to handle routing. The `PrivateRoutes` and `PublicRoutes` components are used to handle private and public routes. The `Toaster` component from `react-hot-toast` is used to display toast notifications.
+ *
+ * @example
+ * import App from "./App";
+ *
+ * // In a React component
+ * <App />
+ */
 function App() {
   return (
     <GoogleApiProvider
